@@ -3,9 +3,23 @@ package Base;
 import ExcelReader.ExcelReader;
 import APIObject.APIObject;
 
-abstract class Base {
+import java.io.IOException;
 
-    private ExcelReader reader;
-    private APIObject apiObject;
+
+public abstract class Base {
+
+    public ExcelReader reader;
+    public APIObject apiObject;
+
+
+
+   public void intziled() {
+        this.reader = new ExcelReader();
+        this.apiObject =new APIObject();
+
+    }
+
+
 
 }
+

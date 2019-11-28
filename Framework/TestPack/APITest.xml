@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Default Suite">
-  <parameter name="excelPath" value="HERE I READ"/>
+  <parameter name="excelPath" value="C:\\Project\\TestingFramework\\Framework\\src\\main\\resources\\Book1.xlsx"/>
+  <parameter name="sheet" value="Select * from Sheet1"/>
   <test name="TestingFramework">
     <classes>
       <class name="APITest"/>

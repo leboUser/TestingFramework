@@ -12,9 +12,6 @@ public class APIObject {
     private Response response;
     private String path;
 
-    APIObject(String path){
-    this.path = path;
-    }
 
     public Request getRequest() {
         return request;
@@ -50,13 +47,21 @@ public class APIObject {
                         .build();
     }
 
-    public void ConfigureTimeouts(int connectTime,int writetimeout,int readtimeout) throws Exception {
+    public void ConfigureTimeouts(int connectTime, int writetimeout, int readtimeout) throws Exception {
         this.client = new OkHttpClient.Builder()
                 .connectTimeout(connectTime, TimeUnit.SECONDS)
                 .writeTimeout(writetimeout, TimeUnit.SECONDS)
                 .readTimeout(readtimeout, TimeUnit.SECONDS)
                 .build();
     }
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
 
 
 

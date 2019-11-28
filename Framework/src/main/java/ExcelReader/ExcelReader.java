@@ -1,50 +1,49 @@
 package ExcelReader;
 
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import java.io.File;
-import java.io.FileInputStream;
+import com.codoid.products.exception.FilloException;
+import com.codoid.products.fillo.Connection;
+import com.codoid.products.fillo.Fillo;
+import com.codoid.products.fillo.Recordset;
+
 import java.io.IOException;
-import java.util.Iterator;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+
 
 public class ExcelReader {
 
-    private Workbook workbook;
-    private Sheet sheet;
-    private Iterator<Row> row;
 
-    ExcelReader(String file_name,int Sheetnum) throws IOException {
-        FileInputStream excelInputStream = new FileInputStream(new File(file_name));
-        this.workbook = new XSSFWorkbook(excelInputStream);
-        this.sheet = workbook.getSheetAt(Sheetnum);
-        this.row = (Iterator<Row>) this.sheet;
+
+    private Recordset recordset;
+    private Connection excelconnection;
+
+    public void pathreader(String file_name) throws  FilloException {
+        Fillo file = new Fillo();
+        this.excelconnection = file.getConnection(file_name);
+
     }
 
-    public Sheet getSheet() {
-        return sheet;
+
+    public Recordset getRecordset() {
+        return recordset;
     }
 
-    public void setSheet(Sheet sheet) {
-        this.sheet = sheet;
+    public void setRecordsetQuery(String query) throws FilloException {
+        this.recordset = excelconnection.executeQuery(query);
     }
 
-    public Workbook getWorkbook() {
-        return workbook;
+    public void reader() throws FilloException {
+        while(this.recordset.next()){
+            System.out.println(this.recordset.getField("Mones"));
+
+        }
+
+        this.recordset.close();
+        this.excelconnection.close();
     }
 
-    public void setWorkbook(Workbook workbook) {
-        this.workbook = workbook;
-    }
 
-    public Iterator<Row> getRow() {
-        return row;
-    }
 
-    public void setRow(Iterator<Row> row) {
-        this.row = row;
-    }
+
 
 
 }
