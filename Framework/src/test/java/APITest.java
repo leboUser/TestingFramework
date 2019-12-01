@@ -1,10 +1,16 @@
 import com.codoid.products.exception.FilloException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import Base.Base;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class APITest extends Base {
@@ -13,7 +19,7 @@ public class APITest extends Base {
 
     @BeforeTest
     @Parameters({"excelPath","sheet"})
-    private void instaniled(String excelPath,String sheet) throws IOException, FilloException {
+    private void instaniled(String excelPath,String sheet) throws FilloException {
        intziled();
         this.reader.pathreader(excelPath);
 
@@ -25,8 +31,32 @@ public class APITest extends Base {
     private void test(String sheet){
         try {
             this.reader.setRecordsetQuery(sheet);
-           this.reader.reader();
+           ArrayList<String> addressLinks = this.reader.excelreader();
+
+            for (String address: addressLinks) {
+                JSONParser parser = new JSONParser();
+                this.apiObject.setPath(address);
+               this.apiObject.setRequest();
+                //System.out.println(this.apiObject.setResponseCode());
+                Assert.assertEquals("200",this.apiObject.setResponseCode());
+                //System.out.println(this.apiObject.setResponseBody().string());
+                JSONObject jsonObject = (JSONObject) parser.parse(this.apiObject.setResponseBody().charStream());
+                JSONObject message  = (JSONObject) jsonObject.get("message");
+
+                JSONArray value = (JSONArray) message.get("greyhound");
+
+                System.out.println(value);
+                for (Object objectValues : value) {
+                    System.out.println(objectValues);
+                }
+
+            }
+
         } catch (FilloException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 

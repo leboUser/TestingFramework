@@ -6,7 +6,7 @@ import com.codoid.products.fillo.Fillo;
 import com.codoid.products.fillo.Recordset;
 
 import java.io.IOException;
-
+import java.util.ArrayList;
 
 
 public class ExcelReader {
@@ -31,14 +31,20 @@ public class ExcelReader {
         this.recordset = excelconnection.executeQuery(query);
     }
 
-    public void reader() throws FilloException {
+    public ArrayList <String> excelreader () throws FilloException {
+        ArrayList <String> values = new ArrayList<String>();
         while(this.recordset.next()){
-            System.out.println(this.recordset.getField("Mones"));
-
+            String execute = this.recordset.getField("Execute").toLowerCase();
+            String address = this.recordset.getField("Address");
+            if(execute.equals("true")) {
+                values.add(address);
+            }
         }
 
         this.recordset.close();
         this.excelconnection.close();
+
+        return values;
     }
 
 

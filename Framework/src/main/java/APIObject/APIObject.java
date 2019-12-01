@@ -27,8 +27,13 @@ public class APIObject {
         return response;
     }
 
-    public void setResponse() throws IOException {
+    public String setResponseCode() throws IOException {
         this.response = this.client.newCall(this.request).execute();
+        return String.valueOf(response.code()) ;
+    }
+
+    public ResponseBody setResponseBody() throws IOException {
+        return this.client.newCall(this.request).execute().body();
     }
 
     public void setRequestAuth(String auth,String token){
@@ -59,6 +64,7 @@ public class APIObject {
     }
 
     public void setPath(String path) {
+        this.client = new OkHttpClient();
         this.path = path;
     }
 
