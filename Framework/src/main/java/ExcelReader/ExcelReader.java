@@ -7,6 +7,7 @@ import com.codoid.products.fillo.Recordset;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class ExcelReader {
@@ -40,7 +41,23 @@ public class ExcelReader {
                 values.add(address);
             }
         }
+        this.recordset.close();
+        this.excelconnection.close();
 
+        return values;
+    }
+
+    public HashMap<String,String[]> seleniumreader () throws FilloException {
+        HashMap <String,String[]> values = new HashMap<String, String[]>();
+        String [] element = new String[2];
+
+        while(this.recordset.next()){
+            String atrributes = this.recordset.getField("Attributes");
+
+            element[0] = this.recordset.getField("Values");
+            element[1] = this.recordset.getField("Type");
+            values.put(atrributes,element);
+        }
         this.recordset.close();
         this.excelconnection.close();
 

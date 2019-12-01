@@ -2,12 +2,11 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Default Suite">
   <parameter name="excelPath" value="C:\\Project\\TestingFramework\\Framework\\src\\main\\resources\\Book1.xlsx"/>
-
-  <test name="APITesting">
-    <parameter name="sheet" value="Select * from Sheet1"/>
+  <!-- TestingFramework -->
+  <test name="WebTesting">
+    <parameter name="sheet" value="Select * from Sheet2"/>
     <classes>
-      <class name="APITest"/>
+      <class name="WebTesting"/>
     </classes>
   </test> <!-- TestingFramework -->
-
 </suite> <!-- Default Suite -->
