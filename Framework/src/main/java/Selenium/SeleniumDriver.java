@@ -196,14 +196,41 @@ public class SeleniumDriver  {
         }
     }
 
-    public boolean enterText(By selector, String textToEnter){
+    public boolean enterText(String[] type, String textToEnter){
         try {
-
-            WaitElement(selector);
             WebDriverWait wait = new WebDriverWait(this.driver,1);
-            wait.until(ExpectedConditions.elementToBeClickable(selector));
-            WebElement element = this.driver.findElement(selector);
-            element.sendKeys(textToEnter);
+            WebElement element = null;
+
+             switch(type[1]){
+                case "id":
+                    WaitElement(By.id(type[0]));
+                    wait.until(ExpectedConditions.elementToBeClickable(By.id(type[0])));
+                    element = this.driver.findElement(By.id(type[0]));
+                    element.sendKeys(textToEnter);
+                    break;
+                case "name":
+                    WaitElement(By.id(type[0]));
+                    wait.until(ExpectedConditions.elementToBeClickable(By.name(type[0])));
+                    element = this.driver.findElement(By.name(type[0]));
+                    element.sendKeys(textToEnter);
+                    break;
+                case "class":
+                    WaitElement(By.className(type[0]));
+                    wait.until(ExpectedConditions.elementToBeClickable(By.className(type[0])));
+                    element = this.driver.findElement(By.className(type[0]));
+                    element.sendKeys(textToEnter);
+                    break;
+                case "css":
+                    WaitElement(By.cssSelector(type[0]));
+                    wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(type[0])));
+                    element = this.driver.findElement(By.cssSelector(type[0]));
+                    element.sendKeys(textToEnter);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid type " + type[0]);
+
+                    }
+
 
             return true;
 
@@ -233,8 +260,8 @@ public class SeleniumDriver  {
             WebDriverWait wait = null;
             WebElement element = null;
 
-                String types = type[1];
-                switch(types) {
+
+                switch(type[1]) {
                     case "xpath":
                         WaitElement(By.xpath(type[0]));
                         wait = new WebDriverWait(this.driver, 1);
@@ -249,19 +276,19 @@ public class SeleniumDriver  {
                         element = this.driver.findElement(By.id(type[0]));
                     break;
                     case "name":
-                        WaitElement(By.id(type[0]));
+                        WaitElement(By.name(type[0]));
                         wait = new WebDriverWait(this.driver, 1);
-                        wait.until(ExpectedConditions.elementToBeClickable(By.id(type[0])));
-                        element = this.driver.findElement(By.id(type[0]));
+                        wait.until(ExpectedConditions.elementToBeClickable(By.name(type[0])));
+                        element = this.driver.findElement(By.name(type[0]));
                     break;
                     case "class":
-                        WaitElement(By.id(type[0]));
+                        WaitElement(By.className(type[0]));
                         wait = new WebDriverWait(this.driver, 1);
-                        wait.until(ExpectedConditions.elementToBeClickable(By.id(type[0])));
-                        element = this.driver.findElement(By.id(type[0]));
+                        wait.until(ExpectedConditions.elementToBeClickable(By.className(type[0])));
+                        element = this.driver.findElement(By.className(type[0]));
                     break;
                     default:
-                        throw new IllegalArgumentException("Invalid type " + type[1]);
+                        throw new IllegalArgumentException("Invalid type " + type[0]);
                 }
 
             return element.getText();
