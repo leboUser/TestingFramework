@@ -69,18 +69,35 @@ public class SeleniumDriver  {
     }
 
     //Interacting Element
-    public boolean WaitElement(By selector){
-
+    public boolean WaitElement(String value,String type ){
         boolean found = false;
         int counter = 0;
 
         try {
             while(!found && counter < 30){
                 try{
-                    WebDriverWait wait = new WebDriverWait(this.driver,1);
-                    wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(selector));
-                    found = true;
+                    WebDriverWait wait = new WebDriverWait(this.driver, 1);
+                    switch(type) {
+                        case "id":
+                            wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id(value)));
+                            found = true;
+                            break;
+                        case "xpath":
+                            wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(value)));
+                            found = true;
+                            break;
+                        case "name":
+                            wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.name(value)));
+                            found = true;
+                            break;
+                        case "class":
+                            wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.className(value)));
+                            found = true;
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Invalid type " + value);
 
+                    }
 
                 }catch(Exception e){
                     counter ++;
@@ -90,13 +107,13 @@ public class SeleniumDriver  {
 
             }
 
-
-            return true;
+            return found;
 
         }catch (Exception e){
             return false;
         }
     }
+
     public boolean clickElement(String[] type){
         try {
             WebElement element = null;
@@ -104,28 +121,28 @@ public class SeleniumDriver  {
             switch (type[1]) {
 
                 case "id":
-                    WaitElement(By.id(type[0]));
+                    WaitElement(type[0],type[1]);
                      wait = new WebDriverWait(this.driver, 1);
                     wait.until(ExpectedConditions.elementToBeClickable(By.id(type[0])));
                      element = this.driver.findElement(By.id(type[0]));
                     element.click();
                     break;
                 case "class":
-                    WaitElement(By.id(type[0]));
+                    WaitElement(type[0],type[1]);
                      wait = new WebDriverWait(this.driver, 1);
                     wait.until(ExpectedConditions.elementToBeClickable(By.className(type[0])));
                      element = this.driver.findElement(By.className(type[0]));
                     element.click();
                     break;
                 case "name":
-                    WaitElement(By.name(type[0]));
+                    WaitElement(type[0],type[1]);
                      wait = new WebDriverWait(this.driver, 1);
                     wait.until(ExpectedConditions.elementToBeClickable(By.name(type[0])));
                      element = this.driver.findElement(By.name(type[0]));
                     element.click();
                     break;
                 default:
-
+                    throw new IllegalArgumentException("Invalid type " + type[0]);
 
             }
 
@@ -136,26 +153,55 @@ public class SeleniumDriver  {
         }
     }
 
-    public boolean selectElementByValue(By selector,String value){
+    public boolean selectElementByValue(String[] type,String value){
         try {
+            WebDriverWait wait = null;
+            Select element = null;
 
-            WaitElement(selector);
-            WebDriverWait wait = new WebDriverWait(this.driver,1);
-            wait.until(ExpectedConditions.visibilityOf(this.driver.findElement(selector)));
-            Select element = new Select(this.driver.findElement(selector));
-            element.selectByValue(value);
-            return true;
+
+            switch(type[1]) {
+                case "id":
+                    WaitElement(type[0], type[1]);
+                     wait = new WebDriverWait(this.driver, 1);
+                    wait.until(ExpectedConditions.visibilityOf(this.driver.findElement(By.id(type[0]))));
+                     element = new Select(this.driver.findElement(By.id(type[0])));
+                    element.selectByValue(value);
+                break;
+                case "name":
+                    WaitElement(type[0], type[1]);
+                    wait = new WebDriverWait(this.driver, 1);
+                    wait.until(ExpectedConditions.visibilityOf(this.driver.findElement(By.name(type[0]))));
+                    element = new Select(this.driver.findElement(By.name(type[0])));
+                    element.selectByValue(value);
+                    break;
+                case "xpath":
+                    WaitElement(type[0], type[1]);
+                    wait = new WebDriverWait(this.driver, 1);
+                    wait.until(ExpectedConditions.visibilityOf(this.driver.findElement(By.xpath(type[0]))));
+                    element = new Select(this.driver.findElement(By.xpath(type[0])));
+                    element.selectByValue(value);
+                    break;
+                case "class":
+                    WaitElement(type[0], type[1]);
+                    wait = new WebDriverWait(this.driver, 1);
+                    wait.until(ExpectedConditions.visibilityOf(this.driver.findElement(By.className(type[0]))));
+                    element = new Select(this.driver.findElement(By.className(type[0])));
+                    element.selectByValue(value);
+                    break;
+                return true;
+
+            }
 
         }catch (Exception e){
             return false;
         }
     }
-
-    public Boolean MovetoElement(By selector){
+/*
+    public Boolean MovetoElement(String[] type){
         try{
-            WaitElement(selector);
+            WaitElement(type[0], type[1]);
             WebDriverWait wait = new WebDriverWait(this.driver,1);
-            wait.until(ExpectedConditions.elementToBeClickable(selector));
+            wait.until(ExpectedConditions.elementToBeClickable(type[]));
             WebElement element = this.driver.findElement(selector);
             Actions actions = new Actions(this.driver);
             actions.moveToElement(element);
