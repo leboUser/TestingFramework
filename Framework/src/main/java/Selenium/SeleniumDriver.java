@@ -157,6 +157,7 @@ public class SeleniumDriver  {
         try {
             WebDriverWait wait = null;
             Select element = null;
+            Boolean found =false;
 
 
             switch(type[1]) {
@@ -173,6 +174,7 @@ public class SeleniumDriver  {
                     wait.until(ExpectedConditions.visibilityOf(this.driver.findElement(By.name(type[0]))));
                     element = new Select(this.driver.findElement(By.name(type[0])));
                     element.selectByValue(value);
+                    found =  true;
                     break;
                 case "xpath":
                     WaitElement(type[0], type[1]);
@@ -180,6 +182,7 @@ public class SeleniumDriver  {
                     wait.until(ExpectedConditions.visibilityOf(this.driver.findElement(By.xpath(type[0]))));
                     element = new Select(this.driver.findElement(By.xpath(type[0])));
                     element.selectByValue(value);
+                    found =  true;
                     break;
                 case "class":
                     WaitElement(type[0], type[1]);
@@ -187,55 +190,103 @@ public class SeleniumDriver  {
                     wait.until(ExpectedConditions.visibilityOf(this.driver.findElement(By.className(type[0]))));
                     element = new Select(this.driver.findElement(By.className(type[0])));
                     element.selectByValue(value);
+                    found =  true;
                     break;
-                return true;
+                default:
+                    throw new IllegalArgumentException("Invalid type " + type[0]);
+
 
             }
+            return found;
 
         }catch (Exception e){
             return false;
         }
     }
-/*
+
     public Boolean MovetoElement(String[] type){
         try{
             WaitElement(type[0], type[1]);
-            WebDriverWait wait = new WebDriverWait(this.driver,1);
-            wait.until(ExpectedConditions.elementToBeClickable(type[]));
-            WebElement element = this.driver.findElement(selector);
+            WebElement element = null;
+            WebDriverWait wait = new WebDriverWait(this.driver, 1);
             Actions actions = new Actions(this.driver);
-            actions.moveToElement(element);
-            actions.perform();
+            Boolean found =false;
 
-            return true;
+            switch(type[1]) {
+                case "id":
+                    wait.until(ExpectedConditions.elementToBeClickable(By.id(type[0])));
+                    element = this.driver.findElement(By.id(type[0]));
+                    actions.moveToElement(element);
+                    actions.perform();
+                    found =true;
+                    break;
+                case "xpath":
+                    wait.until(ExpectedConditions.elementToBeClickable(By.xpath(type[0])));
+                    element = this.driver.findElement(By.xpath(type[0]));
+                    actions.moveToElement(element);
+                    actions.perform();
+                    found = true;
+                    break;
+                case "class":
+                    wait.until(ExpectedConditions.elementToBeClickable(By.className(type[0])));
+                    element = this.driver.findElement(By.className(type[0]));
+                    actions.moveToElement(element);
+                    actions.perform();
+                    found=true;
+                    break;
+                case "name":
+                    wait.until(ExpectedConditions.elementToBeClickable(By.name(type[0])));
+                    element = this.driver.findElement(By.name(type[0]));
+                    actions.moveToElement(element);
+                    actions.perform();
+                    found= true;
+                default:
+                    throw new IllegalArgumentException("Invalid type " + type[0]);
+
+            }
+
+            return found;
         }catch(Exception e){
             return false;
         }
     }
-    public boolean selectElementByIndex(By selector,int value){
+    public boolean selectElementByIndex(String[] type,int value){
         try {
 
-            WaitElement(selector);
+            WaitElement(type[0], type[1]);
             WebDriverWait wait = new WebDriverWait(this.driver,1);
-            wait.until(ExpectedConditions.elementToBeClickable(selector));
-            Select element = new Select(this.driver.findElement(selector));
-            element.selectByIndex(value);
-            return true;
+            Select element = null;
+            boolean found =false;
+            switch (type[1]) {
 
-        }catch (Exception e){
-            return false;
-        }
-    }
-
-    public boolean TAB(By selector){
-        try {
-
-            WaitElement(selector);
-            WebDriverWait wait = new WebDriverWait(this.driver,1);
-            wait.until(ExpectedConditions.elementToBeClickable(selector));
-            WebElement element = this.driver.findElement(selector);
-            element.sendKeys(Keys.TAB);
-            return true;
+                case "id":
+                    wait.until(ExpectedConditions.elementToBeClickable(By.id(type[0])));
+                    element = new Select(this.driver.findElement(By.id(type[0])));
+                    element.selectByIndex(value);
+                    found = true;
+                    break;
+                case "xpath":
+                    wait.until(ExpectedConditions.elementToBeClickable(By.xpath(type[0])));
+                    element = new Select(this.driver.findElement(By.xpath(type[0])));
+                    element.selectByIndex(value);
+                    found = true;
+                    break;
+                case "name":
+                    wait.until(ExpectedConditions.elementToBeClickable(By.name(type[0])));
+                    element = new Select(this.driver.findElement(By.name(type[0])));
+                    element.selectByIndex(value);
+                    found = true;
+                    break;
+                case "class":
+                    wait.until(ExpectedConditions.elementToBeClickable(By.className(type[0])));
+                    element = new Select(this.driver.findElement(By.className(type[0])));
+                    element.selectByIndex(value);
+                    found = true;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid type " + type[0]);
+            }
+                return found;
 
         }catch (Exception e){
             return false;
@@ -244,30 +295,32 @@ public class SeleniumDriver  {
 
     public boolean enterText(String[] type, String textToEnter){
         try {
+
+            WaitElement(type[0], type[1]);
             WebDriverWait wait = new WebDriverWait(this.driver,1);
             WebElement element = null;
+            boolean found =false;
 
              switch(type[1]){
                 case "id":
-                    WaitElement(By.id(type[0]));
                     wait.until(ExpectedConditions.elementToBeClickable(By.id(type[0])));
                     element = this.driver.findElement(By.id(type[0]));
                     element.sendKeys(textToEnter);
+                    found =false;
                     break;
                 case "name":
-                    WaitElement(By.id(type[0]));
                     wait.until(ExpectedConditions.elementToBeClickable(By.name(type[0])));
                     element = this.driver.findElement(By.name(type[0]));
                     element.sendKeys(textToEnter);
+                    found =true;
                     break;
                 case "class":
-                    WaitElement(By.className(type[0]));
                     wait.until(ExpectedConditions.elementToBeClickable(By.className(type[0])));
                     element = this.driver.findElement(By.className(type[0]));
                     element.sendKeys(textToEnter);
+                    found = true;
                     break;
                 case "css":
-                    WaitElement(By.cssSelector(type[0]));
                     wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(type[0])));
                     element = this.driver.findElement(By.cssSelector(type[0]));
                     element.sendKeys(textToEnter);
@@ -303,32 +356,29 @@ public class SeleniumDriver  {
 
     public String getTextFromElement(String[] type){
         try {
+            WaitElement(type[0], type[1]);
             WebDriverWait wait = null;
             WebElement element = null;
 
 
                 switch(type[1]) {
                     case "xpath":
-                        WaitElement(By.xpath(type[0]));
                         wait = new WebDriverWait(this.driver, 1);
                         wait.until(ExpectedConditions.elementToBeClickable(By.xpath(type[0])));
                         element = this.driver.findElement(By.xpath(type[0]));
 
                     break;
                     case "id":
-                        WaitElement(By.id(type[0]));
                         wait = new WebDriverWait(this.driver, 1);
                         wait.until(ExpectedConditions.elementToBeClickable(By.id(type[0])));
                         element = this.driver.findElement(By.id(type[0]));
                     break;
                     case "name":
-                        WaitElement(By.name(type[0]));
                         wait = new WebDriverWait(this.driver, 1);
                         wait.until(ExpectedConditions.elementToBeClickable(By.name(type[0])));
                         element = this.driver.findElement(By.name(type[0]));
                     break;
                     case "class":
-                        WaitElement(By.className(type[0]));
                         wait = new WebDriverWait(this.driver, 1);
                         wait.until(ExpectedConditions.elementToBeClickable(By.className(type[0])));
                         element = this.driver.findElement(By.className(type[0]));
@@ -346,49 +396,40 @@ public class SeleniumDriver  {
         }
     }
 
-    public boolean validateElementText(By selector,String textToValidate){
+    public boolean validateElementText(String[] type,String textToValidate){
         try {
 
-            WaitElement(selector);
+            WaitElement(type[0], type[1]);
             WebDriverWait wait = new WebDriverWait(this.driver,1);
-            wait.until(ExpectedConditions.elementToBeClickable(selector));
-            WebElement element = this.driver.findElement(selector);
+            WebElement element =null;
+            switch(type[1]) {
+                case"id":
+                    wait.until(ExpectedConditions.elementToBeClickable(By.id(type[0])));
+                     element = this.driver.findElement(By.id(type[0]));
+                    break;
+                case "name":
+                    wait.until(ExpectedConditions.elementToBeClickable(By.name(type[0])));
+                    element = this.driver.findElement(By.name(type[0]));
+                    break;
+                case "xpath":
+                    wait.until(ExpectedConditions.elementToBeClickable(By.xpath(type[0])));
+                    element = this.driver.findElement(By.xpath(type[0]));
+                    break;
+                case "class":
+                    wait.until(ExpectedConditions.elementToBeClickable(By.className(type[0])));
+                    element = this.driver.findElement(By.className(type[0]));
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid type " + type[0]);
 
+            }
             return element.getText().equals(textToValidate);
 
         }catch (Exception e){
             return false;
         }
     }
-/*
-    public String takeScreenshot(boolean status) {
-        StringBuilder imagePathBuilder = new StringBuilder();
-        StringBuilder relativePathBuilder = new StringBuilder();
 
-
-        try {
-            imagePathBuilder.append(getReportDirectory());
-            relativePathBuilder.append("Screenshot\\");
-            new File(imagePathBuilder.toString() + (relativePathBuilder).toString()).mkdir();
-            relativePathBuilder.append(screenCounter + "_");
-
-            screenCounter++;
-            if (status) {
-                relativePathBuilder.append("PASSED");
-
-            } else {
-                relativePathBuilder.append("FAILED");
-            }
-            relativePathBuilder.append(".png");
-            File  screenshot =((TakesScreenshot)getDriver()).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(screenshot,new File(imagePathBuilder.append(relativePathBuilder).toString()));
-            return "./"+relativePathBuilder.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-*/
     public void pause(int millis) {
         try {
             Thread.sleep(millis);
