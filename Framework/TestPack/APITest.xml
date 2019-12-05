@@ -4,7 +4,7 @@
   <parameter name="excelPath" value="C:\\Project\\TestingFramework\\Framework\\src\\main\\resources\\Book1.xlsx"/>
 
   <test name="APITesting">
-    <parameter name="sheet" value="Select * from Sheet1"/>
+    <parameter name="sheet" value="Select * from API"/>
     <classes>
       <class name="APITest"/>
     </classes>

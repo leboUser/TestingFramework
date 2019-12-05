@@ -49,9 +49,11 @@ public class ExcelReader {
 
     public HashMap<String,String[]> seleniumreader () throws FilloException {
         HashMap <String,String[]> values = new HashMap<String, String[]>();
-        String [] element = new String[2];
+
+
 
         while(this.recordset.next()){
+            String [] element = new String[2];
             String atrributes = this.recordset.getField("Attributes");
 
             element[0] = this.recordset.getField("Values");

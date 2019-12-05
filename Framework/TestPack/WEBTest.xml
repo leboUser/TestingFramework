@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Default Suite">
-  <parameter name="excelPath" value="C:\\Project\\TestingFramework\\Framework\\src\\main\\resources\\Book1.xlsx"/>
+  <parameter name="excelPath" value="C:\projects\TestingFramework\Framework\src\main\resources\Book1.xlsx"/>
   <!-- TestingFramework -->
   <test name="WebTesting">
-    <parameter name="sheet" value="Select * from Sheet2"/>
+    <parameter name="sheet" value="Select * from WebElement"/>
+    <parameter name="website" value="Select * from WebElement"/>
+    <parameter name="browser" value="CHROME"/>
+    <parameter name="url" value="https://www.google.com/"/>
     <classes>
       <class name="WebTesting"/>
     </classes>

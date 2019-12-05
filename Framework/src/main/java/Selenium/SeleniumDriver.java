@@ -20,25 +20,24 @@ import java.text.SimpleDateFormat;
 public class SeleniumDriver  {
 
     private WebDriver driver;
-    public enum BrowserType{CHROME,IE,FIREFOX}
-    private BrowserType currentBrowser;
+    private String currentBrowser;
     public int screenCounter = 0;
 
-    public SeleniumDriver(BrowserType browser) {
-        this.currentBrowser = browser;
+    public void seleniumBrowser(String browser) {
+        this.currentBrowser = browser.toUpperCase();
         launchDriver();
     }
 
     public boolean launchDriver() {
         switch (this.currentBrowser) {
-            case CHROME:
+            case "CHROME":
                 WebDriverManager.chromedriver().setup();
                 this.driver = new ChromeDriver();
                 break;
-            case IE:
+            case "IE":
                 WebDriverManager.edgedriver().setup();
                 this.driver = new EdgeDriver();
-            case FIREFOX:
+            case "FIREFOX":
                 WebDriverManager.firefoxdriver().setup();
                 this.driver = new FirefoxDriver();
             default:
