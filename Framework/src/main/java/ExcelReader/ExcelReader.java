@@ -56,6 +56,7 @@ public class ExcelReader {
             String [] element = new String[2];
             String atrributes = this.recordset.getField("Attributes");
 
+
             element[0] = this.recordset.getField("Values");
             element[1] = this.recordset.getField("Type");
             values.put(atrributes,element);
