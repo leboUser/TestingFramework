@@ -5,6 +5,7 @@ import com.codoid.products.fillo.Connection;
 import com.codoid.products.fillo.Fillo;
 import com.codoid.products.fillo.Recordset;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +20,8 @@ public class ExcelReader {
 
     public void pathreader(String file_name) throws  FilloException {
         Fillo file = new Fillo();
-        this.excelconnection = file.getConnection(file_name);
+        File excelfile = new File(file_name);
+        this.excelconnection = file.getConnection(excelfile.getPath());
 
     }
 
@@ -33,7 +35,7 @@ public class ExcelReader {
     }
 
     public ArrayList <String> excelreader () throws FilloException {
-        ArrayList <String> values = new ArrayList<String>();
+        ArrayList <String> values = new ArrayList<>();
         while(this.recordset.next()){
             String execute = this.recordset.getField("Execute").toLowerCase();
             String address = this.recordset.getField("Address");
@@ -48,7 +50,7 @@ public class ExcelReader {
     }
 
     public HashMap<String,String[]> seleniumreader () throws FilloException {
-        HashMap <String,String[]> values = new HashMap<String, String[]>();
+        HashMap <String,String[]> values = new HashMap<>();
 
 
 

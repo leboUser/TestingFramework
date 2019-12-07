@@ -3,7 +3,6 @@ package Selenium;
 
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -13,7 +12,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.io.File;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
@@ -28,7 +26,7 @@ public class SeleniumDriver  {
         launchDriver();
     }
 
-    public boolean launchDriver() {
+    private boolean launchDriver() {
         switch (this.currentBrowser) {
             case "CHROME":
                 WebDriverManager.chromedriver().setup();
@@ -68,7 +66,7 @@ public class SeleniumDriver  {
     }
 
     //Interacting Element
-    public boolean WaitElement(String value,String type ){
+    private boolean waitElement(String value, String type ){
         boolean found = false;
         int counter = 0;
 
@@ -115,29 +113,39 @@ public class SeleniumDriver  {
 
     public boolean clickElement(String[] type){
         try {
-            WebElement element = null;
-            WebDriverWait wait = null;
+            WebElement element ;
+            WebDriverWait wait = new WebDriverWait(this.driver, 1);
             switch (type[1]) {
 
                 case "id":
-                    WaitElement(type[0],type[1]);
-                     wait = new WebDriverWait(this.driver, 1);
+                    waitElement(type[0],type[1]);
                     wait.until(ExpectedConditions.elementToBeClickable(By.id(type[0])));
                      element = this.driver.findElement(By.id(type[0]));
                     element.click();
                     break;
                 case "class":
-                    WaitElement(type[0],type[1]);
+                    waitElement(type[0],type[1]);
                      wait = new WebDriverWait(this.driver, 1);
                     wait.until(ExpectedConditions.elementToBeClickable(By.className(type[0])));
                      element = this.driver.findElement(By.className(type[0]));
                     element.click();
                     break;
                 case "name":
-                    WaitElement(type[0],type[1]);
-                     wait = new WebDriverWait(this.driver, 1);
+                    waitElement(type[0],type[1]);
                     wait.until(ExpectedConditions.elementToBeClickable(By.name(type[0])));
-                     element = this.driver.findElement(By.name(type[0]));
+                    element = this.driver.findElement(By.name(type[0]));
+                    element.click();
+                    break;
+                case "xpath":
+                    waitElement(type[0],type[1]);
+                    wait.until(ExpectedConditions.elementToBeClickable(By.xpath(type[0])));
+                    element = this.driver.findElement(By.xpath(type[0]));
+                    element.click();
+                    break;
+                case "css":
+                    waitElement(type[0],type[1]);
+                    wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(type[0])));
+                    element = this.driver.findElement(By.cssSelector(type[0]));
                     element.click();
                     break;
                 default:
@@ -154,39 +162,43 @@ public class SeleniumDriver  {
 
     public boolean selectElementByValue(String[] type,String value){
         try {
-            WebDriverWait wait = null;
-            Select element = null;
-            Boolean found =false;
+            Select element;
+            WebDriverWait wait =  new WebDriverWait(this.driver, 1);
+            boolean found =false;
 
 
             switch(type[1]) {
                 case "id":
-                    WaitElement(type[0], type[1]);
-                     wait = new WebDriverWait(this.driver, 1);
+                    waitElement(type[0], type[1]);
                     wait.until(ExpectedConditions.visibilityOf(this.driver.findElement(By.id(type[0]))));
                      element = new Select(this.driver.findElement(By.id(type[0])));
                     element.selectByValue(value);
+                    found =  true;
                 break;
                 case "name":
-                    WaitElement(type[0], type[1]);
-                    wait = new WebDriverWait(this.driver, 1);
+                    waitElement(type[0], type[1]);
                     wait.until(ExpectedConditions.visibilityOf(this.driver.findElement(By.name(type[0]))));
                     element = new Select(this.driver.findElement(By.name(type[0])));
                     element.selectByValue(value);
                     found =  true;
                     break;
                 case "xpath":
-                    WaitElement(type[0], type[1]);
-                    wait = new WebDriverWait(this.driver, 1);
+                    waitElement(type[0], type[1]);
                     wait.until(ExpectedConditions.visibilityOf(this.driver.findElement(By.xpath(type[0]))));
                     element = new Select(this.driver.findElement(By.xpath(type[0])));
                     element.selectByValue(value);
                     found =  true;
                     break;
                 case "class":
-                    WaitElement(type[0], type[1]);
-                    wait = new WebDriverWait(this.driver, 1);
+                    waitElement(type[0], type[1]);
                     wait.until(ExpectedConditions.visibilityOf(this.driver.findElement(By.className(type[0]))));
+                    element = new Select(this.driver.findElement(By.className(type[0])));
+                    element.selectByValue(value);
+                    found =  true;
+                    break;
+                case "css":
+                    waitElement(type[0],type[1]);
+                    wait.until(ExpectedConditions.visibilityOf(this.driver.findElement(By.cssSelector(type[0]))));
                     element = new Select(this.driver.findElement(By.className(type[0])));
                     element.selectByValue(value);
                     found =  true;
@@ -205,11 +217,11 @@ public class SeleniumDriver  {
 
     public Boolean MovetoElement(String[] type){
         try{
-            WaitElement(type[0], type[1]);
-            WebElement element = null;
+            waitElement(type[0], type[1]);
+            WebElement element;
             WebDriverWait wait = new WebDriverWait(this.driver, 1);
             Actions actions = new Actions(this.driver);
-            Boolean found =false;
+            boolean found =false;
 
             switch(type[1]) {
                 case "id":
@@ -239,6 +251,7 @@ public class SeleniumDriver  {
                     actions.moveToElement(element);
                     actions.perform();
                     found= true;
+                    break;
                 default:
                     throw new IllegalArgumentException("Invalid type " + type[0]);
 
@@ -252,10 +265,10 @@ public class SeleniumDriver  {
     public boolean selectElementByIndex(String[] type,int value){
         try {
 
-            WaitElement(type[0], type[1]);
+            waitElement(type[0], type[1]);
             WebDriverWait wait = new WebDriverWait(this.driver,1);
-            Select element = null;
-            boolean found =false;
+            Select element ;
+            boolean found ;
             switch (type[1]) {
 
                 case "id":
@@ -282,6 +295,12 @@ public class SeleniumDriver  {
                     element.selectByIndex(value);
                     found = true;
                     break;
+                case "css":
+                    wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(type[0])));
+                    element = new Select(this.driver.findElement(By.cssSelector(type[0])));
+                    element.selectByIndex(value);
+                    found = true;
+                    break;
                 default:
                     throw new IllegalArgumentException("Invalid type " + type[0]);
             }
@@ -295,17 +314,17 @@ public class SeleniumDriver  {
     public boolean enterText(String[] type, String textToEnter){
         try {
 
-            WaitElement(type[0], type[1]);
+            waitElement(type[0], type[1]);
             WebDriverWait wait = new WebDriverWait(this.driver,1);
-            WebElement element = null;
-            boolean found =false;
+            WebElement element ;
+            boolean found ;
 
              switch(type[1]){
                 case "id":
                     wait.until(ExpectedConditions.elementToBeClickable(By.id(type[0])));
                     element = this.driver.findElement(By.id(type[0]));
                     element.sendKeys(textToEnter);
-                    found =false;
+                    found =true;
                     break;
                 case "name":
                     wait.until(ExpectedConditions.elementToBeClickable(By.name(type[0])));
@@ -323,6 +342,7 @@ public class SeleniumDriver  {
                     wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(type[0])));
                     element = this.driver.findElement(By.cssSelector(type[0]));
                     element.sendKeys(textToEnter);
+                    found = true;
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid type " + type[0]);
@@ -330,7 +350,7 @@ public class SeleniumDriver  {
                     }
 
 
-            return true;
+            return found;
 
         }catch (Exception e){
             return false;
@@ -355,33 +375,33 @@ public class SeleniumDriver  {
 
     public String getTextFromElement(String[] type){
         try {
-            WaitElement(type[0], type[1]);
-            WebDriverWait wait = null;
-            WebElement element = null;
+            waitElement(type[0], type[1]);
+            WebDriverWait wait = new WebDriverWait(this.driver, 1);
+            WebElement element;
 
 
                 switch(type[1]) {
                     case "xpath":
-                        wait = new WebDriverWait(this.driver, 1);
                         wait.until(ExpectedConditions.elementToBeClickable(By.xpath(type[0])));
                         element = this.driver.findElement(By.xpath(type[0]));
 
                     break;
                     case "id":
-                        wait = new WebDriverWait(this.driver, 1);
                         wait.until(ExpectedConditions.elementToBeClickable(By.id(type[0])));
                         element = this.driver.findElement(By.id(type[0]));
                     break;
                     case "name":
-                        wait = new WebDriverWait(this.driver, 1);
                         wait.until(ExpectedConditions.elementToBeClickable(By.name(type[0])));
                         element = this.driver.findElement(By.name(type[0]));
                     break;
                     case "class":
-                        wait = new WebDriverWait(this.driver, 1);
                         wait.until(ExpectedConditions.elementToBeClickable(By.className(type[0])));
                         element = this.driver.findElement(By.className(type[0]));
                     break;
+                    case "css":
+                        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(type[0])));
+                        element = this.driver.findElement(By.cssSelector(type[0]));
+                        break;
                     default:
                         throw new IllegalArgumentException("Invalid type " + type[0]);
                 }
@@ -398,9 +418,9 @@ public class SeleniumDriver  {
     public boolean validateElementText(String[] type,String textToValidate){
         try {
 
-            WaitElement(type[0], type[1]);
+            waitElement(type[0], type[1]);
             WebDriverWait wait = new WebDriverWait(this.driver,1);
-            WebElement element =null;
+            WebElement element ;
             switch(type[1]) {
                 case"id":
                     wait.until(ExpectedConditions.elementToBeClickable(By.id(type[0])));
@@ -418,6 +438,10 @@ public class SeleniumDriver  {
                     wait.until(ExpectedConditions.elementToBeClickable(By.className(type[0])));
                     element = this.driver.findElement(By.className(type[0]));
                     break;
+                case "css":
+                    wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(type[0])));
+                    element = this.driver.findElement(By.cssSelector(type[0]));
+                    break;
                 default:
                     throw new IllegalArgumentException("Invalid type " + type[0]);
 
@@ -429,7 +453,7 @@ public class SeleniumDriver  {
         }
     }
 
-    public void pause(int millis) {
+    private void pause(int millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {

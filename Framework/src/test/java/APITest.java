@@ -20,7 +20,7 @@ public class APITest extends Base {
     @BeforeTest
     @Parameters({"excelPath","sheet"})
     private void instaniled(String excelPath,String sheet) throws FilloException {
-       intziled();
+       apiClasses();
         this.reader.pathreader(excelPath);
 
     }
@@ -28,7 +28,7 @@ public class APITest extends Base {
 
     @Test
     @Parameters({"sheet"})
-    private void test(String sheet){
+    private void test(String sheet) throws ParseException {
         try {
             this.reader.setRecordsetQuery(sheet);
            ArrayList<String> addressLinks = this.reader.excelreader();
@@ -43,7 +43,7 @@ public class APITest extends Base {
                 JSONObject jsonObject = (JSONObject) parser.parse(this.apiObject.setResponseBody().charStream());
                 JSONObject message  = (JSONObject) jsonObject.get("message");
 
-                JSONArray value = (JSONArray) message.get("greyhound");
+                JSONArray value = (JSONArray) message.get("hound");
 
                 System.out.println(value);
                 for (Object objectValues : value) {
@@ -55,8 +55,6 @@ public class APITest extends Base {
         } catch (FilloException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
             e.printStackTrace();
         }
 

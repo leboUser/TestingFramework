@@ -2,7 +2,6 @@ import Base.Base;
 import com.codoid.products.exception.FilloException;
 import org.testng.annotations.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class WebTesting  extends Base {
@@ -10,7 +9,7 @@ public class WebTesting  extends Base {
     @BeforeTest
     @Parameters({"excelPath","sheet","browser","url"})
     private void instaniled(String excelPath,String sheet,String browser,String url) throws FilloException {
-        intziled();
+        seleniumClasses();
         this.selenium.seleniumBrowser(browser);
         this.selenium.navigation(url);
         this.reader.pathreader(excelPath);
@@ -29,8 +28,8 @@ public class WebTesting  extends Base {
 
 
     }
-
-    private void endTest(){
+    @AfterTest
+    public void endTest(){
         selenium.shutDown();
     }
 }

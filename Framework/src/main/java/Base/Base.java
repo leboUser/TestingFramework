@@ -7,19 +7,23 @@ import Selenium.SeleniumDriver;
 import java.io.IOException;
 
 
-public abstract class Base {
+public class Base {
 
-    public ExcelReader reader;
-    public APIObject apiObject;
-    public SeleniumDriver selenium;
+    protected ExcelReader reader;
+    protected APIObject apiObject;
+    protected SeleniumDriver selenium;
 
 
 
-   public void intziled() {
+   protected void seleniumClasses() {
         this.reader = new ExcelReader();
-        this.apiObject =new APIObject();
         this.selenium = new SeleniumDriver();
 
+    }
+
+    protected void apiClasses(){
+        this.reader = new ExcelReader();
+        this.apiObject = new APIObject();
     }
 
 
