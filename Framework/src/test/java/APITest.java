@@ -1,9 +1,11 @@
+import Reporter.TestListener;
 import com.codoid.products.exception.FilloException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -22,6 +24,7 @@ public class APITest extends Base {
     private void instaniled(String excelPath,String sheet) throws FilloException {
        apiClasses();
         this.reader.pathreader(excelPath);
+        this.reporter.testcase("API testing");
 
     }
 
@@ -38,6 +41,8 @@ public class APITest extends Base {
                 this.apiObject.setPath(address);
                this.apiObject.setRequest();
                 //System.out.println(this.apiObject.setResponseCode());
+                reporter.testStep("Receive 200","Testing the connection");
+              reporter.MultiStep("Receive 200", true);
                 Assert.assertEquals("200",this.apiObject.setResponseCode());
                 //System.out.println(this.apiObject.setResponseBody().string());
                 JSONObject jsonObject = (JSONObject) parser.parse(this.apiObject.setResponseBody().charStream());
@@ -59,6 +64,10 @@ public class APITest extends Base {
         }
 
 
+    }
+    @AfterTest
+    public void compilingTestcase(){
+        this.reporter.flush();
     }
 
 
