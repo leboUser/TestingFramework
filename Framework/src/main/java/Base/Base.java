@@ -10,11 +10,10 @@ import java.io.IOException;
 
 public class Base {
 
+    protected TestListener reporter;
     protected ExcelReader reader;
     protected APIObject apiObject;
     protected SeleniumDriver selenium;
-    protected TestListener reporter;
-
 
 
    protected void seleniumClasses() {

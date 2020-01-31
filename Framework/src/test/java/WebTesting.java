@@ -1,35 +1,44 @@
 import Base.Base;
 import com.codoid.products.exception.FilloException;
+import org.testng.ITestContext;
 import org.testng.annotations.*;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class WebTesting  extends Base {
 
     @BeforeTest
     @Parameters({"excelPath","sheet","browser","url"})
-    private void instaniled(String excelPath,String sheet,String browser,String url) throws FilloException {
+    private void WebTesting(String excelPath, String sheet, String browser, String url, ITestContext testName) throws FilloException {
         seleniumClasses();
-        this.selenium.seleniumBrowser(browser);
-        this.selenium.navigation(url);
-        this.reader.pathreader(excelPath);
+        selenium.seleniumBrowser(browser);
+        selenium.navigation(url);
+        reader.pathreader(excelPath);
+        reporter.testsuite(testName.getName());
 
     }
 
     @Test
     @Parameters({"sheet"})
-    private void test(String sheet) throws FilloException {
+    private void test(String sheet) {
 
-        this.reader.setRecordsetQuery(sheet);
+        try {
+            this.reader.setRecordsetQuery(sheet);
+
         HashMap<String,String[]> webElement = this.reader.seleniumreader();
-        this.selenium.enterText(webElement.get("googleTextfield"),"YEA man it worked");
+        selenium.enterText(webElement.get("googleTextfield"),"YEA man it worked");
+        reporter.TestcompleteWithScreenShot("Step In ", true);
 
-        selenium.shutDown();
-
-
+        } catch (FilloException | IOException e) {
+            e.printStackTrace();
+        }
     }
+
     @AfterTest
     public void endTest(){
         selenium.shutDown();
+        reader.closeFillo();
+        this.reporter.flush();
     }
 }

@@ -2,7 +2,9 @@ package Selenium;
 
 
 
+import Base.Base;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -12,12 +14,15 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
-public class SeleniumDriver  {
+public class SeleniumDriver extends Base {
 
-    private WebDriver driver;
+    protected WebDriver driver;
     private String currentBrowser;
     public int screenCounter = 0;
 
@@ -451,6 +456,31 @@ public class SeleniumDriver  {
         }catch (Exception e){
             return false;
         }
+    }
+
+    public String takeScreenshot(Boolean status, String getReportDirectory) throws IOException {
+        screenCounter++;
+        StringBuilder imagePath = new StringBuilder();
+        StringBuilder relativePath = new StringBuilder();
+
+            imagePath.append(getReportDirectory);
+            relativePath.append("Screenshots\\");
+            new File(imagePath.toString() + (relativePath).toString()).mkdirs();
+
+            relativePath.append(screenCounter + "_");
+            if (status) {
+                relativePath.append("PASSED");
+            } else {
+                relativePath.append("FAILED");
+            }
+            relativePath.append(".png");
+
+             System.out.println(imagePath.append(relativePath).toString());
+            File screenshotBase64 = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(screenshotBase64,new File(imagePath.append(relativePath).toString()));
+
+            return relativePath.toString();
+
     }
 
     private void pause(int millis) {

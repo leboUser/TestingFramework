@@ -6,7 +6,23 @@
   <test name="APITesting">
     <parameter name="sheet" value="Select * from API"/>
     <classes>
-      <class name="APITest"/>
+      <class name="APITest">
+        <methods>
+          <include name="test"/>
+          <include name="test2"/>
+        </methods>
+      </class>
+    </classes>
+  </test> <!-- TestingFramework -->
+
+  <test name="APITesting 2">
+    <parameter name="sheet" value="Select * from API"/>
+    <classes>
+      <class name="APITest">
+        <methods>
+          <include name="test"/>
+        </methods>
+      </class>
     </classes>
   </test> <!-- TestingFramework -->
 

@@ -43,8 +43,6 @@ public class ExcelReader {
             }
         }
         this.recordset.close();
-        this.excelconnection.close();
-
         return values;
     }
 
@@ -63,9 +61,14 @@ public class ExcelReader {
             values.put(atrributes,element);
         }
         this.recordset.close();
-        this.excelconnection.close();
+
 
         return values;
+    }
+
+  public void closeFillo(){
+        this.excelconnection.close();
+
     }
 
 

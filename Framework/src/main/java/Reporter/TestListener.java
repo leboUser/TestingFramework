@@ -1,29 +1,35 @@
 package Reporter;
 
-import com.aventstack.extentreports.ExtentReports;
+import Base.Base;
 import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.MediaEntityModelProvider;
-import com.aventstack.extentreports.gherkin.model.Feature;
+import com.aventstack.extentreports.MediaEntityBuilder;
 
 
-public  class  TestListener extends Reporter {
+import java.io.IOException;
 
 
-    private ExtentTest test = null;
-    private ExtentTest node = null;
+public  class  TestListener extends Base {
 
-   public boolean testcase(String testcaseName){
-       test = super.report.createTest(testcaseName);
+    private ExtentTest test;
+    private ExtentTest node;
+    private Reporter testsuites;
+    private String testCase;
+
+
+    public boolean testsuite(String testCases) {
+       this.testCase = testCases;
+       testsuites = new Reporter(testCase);
+       test = testsuites.report.createTest("We have"+testCase);
+       node = test;
        return true;
     }
 
-    boolean statusIndetails(String status,String detail){
-
-        return true;
+    public void testcaseCreation(String testcaseName){
+        test = testsuites.report.createTest(testcaseName);
     }
 
-   public void testcase(String reasonP_F,boolean results){
 
+   public void Testcomplete(String reasonP_F, boolean results){
         if(results){
             this.test.pass(reasonP_F);
         }else{
@@ -31,38 +37,20 @@ public  class  TestListener extends Reporter {
         }
     }
 
-   public void testcaseWithScreenShot(String reasonP_F,boolean results){
-        if(results){
-            test.pass(reasonP_F);
-        }else{
-           // this.test.fail(reasonP_F, MediaEntityModelProvider(""));
-        }
-    }
-
+   public void TestcompleteWithScreenShot(String reasonP_F, boolean results) throws IOException {
+       try {
+           String value = selenium.takeScreenshot(results,testsuites.getReportDirectory());
+           //test.pass(reasonP_F, MediaEntityBuilder.createScreenCaptureFromPath()).build());
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+   }
 
    public void testStep(String step,String description){
         this.node = test.createNode(step,description);
     }
-
-  public  void MultiStep(String reasonP_F,boolean results){
-        if(results){
-            this.node.pass(reasonP_F);
-        }else{
-            this.node.fail(reasonP_F);
-        }
+   public void flush(){
+         testsuites.report.flush();
     }
-
-
-
-
-
-
-     public void flush(){
-        super.report.flush();
-    }
-
-
-
-
 
 }
