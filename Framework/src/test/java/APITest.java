@@ -41,8 +41,7 @@ public class APITest extends Base {
                 JSONParser parser = new JSONParser();
                 this.apiObject.setPath(address);
                 this.apiObject.setRequest();
-                //System.out.println(this.apiObject.setResponseCode());
-               // reporter.testStep("Receive 200", "Testing the connection");
+
 
                 Assert.assertEquals("200", this.apiObject.setResponseCode());
 

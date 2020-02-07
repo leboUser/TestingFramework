@@ -8,7 +8,7 @@ import Selenium.SeleniumDriver;
 import java.io.IOException;
 
 
-public class Base {
+public abstract class Base {
 
     protected TestListener reporter;
     protected ExcelReader reader;
@@ -27,6 +27,10 @@ public class Base {
         this.reader = new ExcelReader();
         this.apiObject = new APIObject();
         this.reporter = new TestListener();
+    }
+    //Please use this Directory  to store screenshot
+    public String getReportDirecty(){
+      return this.reporter.getDic();
     }
 
 

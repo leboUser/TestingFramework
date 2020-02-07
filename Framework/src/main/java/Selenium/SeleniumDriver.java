@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat;
 
 public class SeleniumDriver extends Base {
 
-    protected WebDriver driver;
+    private WebDriver driver;
     private String currentBrowser;
     public int screenCounter = 0;
 
@@ -460,26 +460,24 @@ public class SeleniumDriver extends Base {
 
     public String takeScreenshot(Boolean status, String getReportDirectory) throws IOException {
         screenCounter++;
-        StringBuilder imagePath = new StringBuilder();
-        StringBuilder relativePath = new StringBuilder();
+        String imagePath =getReportDirectory;
+        String relativePath = "Screenshots\\";
 
-            imagePath.append(getReportDirectory);
-            relativePath.append("Screenshots\\");
-            new File(imagePath.toString() + (relativePath).toString()).mkdirs();
+            new File(imagePath + relativePath).mkdirs();
 
-            relativePath.append(screenCounter + "_");
+        relativePath=relativePath+screenCounter + "_";
             if (status) {
-                relativePath.append("PASSED");
+                relativePath=relativePath+"PASSED";
             } else {
-                relativePath.append("FAILED");
+                relativePath = relativePath+"FAILED";
             }
-            relativePath.append(".png");
+            relativePath=relativePath+".png";
 
-             System.out.println(imagePath.append(relativePath).toString());
+             imagePath=imagePath+relativePath;
             File screenshotBase64 = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(screenshotBase64,new File(imagePath.append(relativePath).toString()));
+            FileUtils.copyFile(screenshotBase64,new File(imagePath));
 
-            return relativePath.toString();
+            return imagePath;
 
     }
 

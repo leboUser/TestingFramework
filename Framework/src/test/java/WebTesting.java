@@ -28,7 +28,7 @@ public class WebTesting  extends Base {
 
         HashMap<String,String[]> webElement = this.reader.seleniumreader();
         selenium.enterText(webElement.get("googleTextfield"),"YEA man it worked");
-        reporter.TestcompleteWithScreenShot("Step In ", true);
+        reporter.TestcompleteWithScreenShot("Step In ", selenium.takeScreenshot(true,this.getReportDirecty()));
 
         } catch (FilloException | IOException e) {
             e.printStackTrace();

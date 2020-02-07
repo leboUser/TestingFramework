@@ -1,7 +1,5 @@
 package Reporter;
 
-
-
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import Base.Base;
@@ -16,13 +14,12 @@ public class Reporter extends Base {
     private static final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:ms");
     public ExtentHtmlReporter htmlReporter;
     public ExtentReports report =  new ExtentReports();
-
     public String reportDirctory;
 
 
-
     Reporter(String testname) {
-         htmlReporter = new ExtentHtmlReporter( setReportDirectory(testname) +"extend.html");
+         super();
+         htmlReporter =  new ExtentHtmlReporter( setReportDirectory(testname) +"extend.html");
         // htmlReporter.config().setAutoCreateRelativePathMedia(true);
          report.attachReporter(this.htmlReporter);
     }

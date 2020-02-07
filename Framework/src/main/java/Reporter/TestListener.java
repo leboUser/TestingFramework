@@ -3,6 +3,7 @@ package Reporter;
 import Base.Base;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
+import org.openqa.selenium.WebDriver;
 
 
 import java.io.IOException;
@@ -20,8 +21,11 @@ public  class  TestListener extends Base {
        this.testCase = testCases;
        testsuites = new Reporter(testCase);
        test = testsuites.report.createTest("We have"+testCase);
-       node = test;
+
        return true;
+    }
+    public String getDic(){
+        return testsuites.reportDirctory;
     }
 
     public void testcaseCreation(String testcaseName){
@@ -37,10 +41,9 @@ public  class  TestListener extends Base {
         }
     }
 
-   public void TestcompleteWithScreenShot(String reasonP_F, boolean results) throws IOException {
+   public void TestcompleteWithScreenShot(String reasonP_F,String pathPicture) throws IOException {
        try {
-           String value = selenium.takeScreenshot(results,testsuites.getReportDirectory());
-           //test.pass(reasonP_F, MediaEntityBuilder.createScreenCaptureFromPath()).build());
+           test.pass(reasonP_F, MediaEntityBuilder.createScreenCaptureFromPath(pathPicture).build());
        } catch (IOException e) {
            e.printStackTrace();
        }
