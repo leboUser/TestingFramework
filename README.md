@@ -16,8 +16,7 @@ Testing Framework for API, Selenium, Database Testing and Visual Testing, AI tes
  1) JDBC comparing with json file.
  
  ## AI testing
- 1) Retest -- Still to integrade AI section
- 
+ 1) Retest -- Still in progress
  
  ## Visual Testing
  
